@@ -183,6 +183,9 @@ class WsServer implements HttpServerInterface {
                 break;
             case Frame::OP_PING:
                 $conn->send(new Frame($frame->getPayload(), true, Frame::OP_PONG));
+                if($this->delegate instanceof PingPongInterface){
+                    $this->delegate->onPing($conn);
+                }
                 break;
             case Frame::OP_PONG:
                 $pongReceiver = $this->pongReceiver;
